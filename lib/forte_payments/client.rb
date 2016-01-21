@@ -80,7 +80,6 @@ module FortePayments
         connection.basic_auth api_key, secure_key
         connection.request    :json
         connection.response   :logger
-        connection.use        FaradayMiddleware::Mashify
         connection.response   :json
         connection.adapter    Faraday.default_adapter
       end
