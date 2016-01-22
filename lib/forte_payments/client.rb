@@ -12,11 +12,13 @@ module FortePayments
 
     attr_reader :api_key, :secure_key, :account_id, :location_id
 
-    def initialize(api_key: ENV['FORTE_API_KEY'], secure_key: ENV['FORTE_SECURE_KEY'], account_id: ENV['FORTE_ACCOUNT_ID'], location_id: ENV['FORTE_LOCATION_ID'])
-      @api_key     = api_key
-      @secure_key  = secure_key
-      @account_id  = account_id
-      @location_id = location_id
+    def initialize(options = {})
+      @api_key     = options[:api_key] || ENV['FORTE_API_KEY']
+      @secure_key  = options[:secure_key] || ENV['FORTE_SECURE_KEY']
+      @account_id  = options[:account_id] || ENV['FORTE_ACCOUNT_ID']
+      @location_id = options[:location_id] || ENV['FORTE_LOCATION_ID']
+      @debug       = (options[:debug] == false) ? false : true
+      @proxy       = options[:http_proxy] || ENV['HTTP_PROXY'] || ENV['http_proxy']
     end
 
     def get(path, options={})
@@ -69,17 +71,22 @@ module FortePayments
     end
 
     def connection
-      headers = {
-        :accept => 'application/json',
-        'X-Forte-Auth-Account-Id' => "act_#{account_id}"
+      connection_options = {
+        proxy: @proxy,
+        headers: {
+          'Accept'                  => 'application/json',
+          'X-Forte-Auth-Account-Id' => "act_#{account_id}"
+        }
       }
-      Faraday.new(headers: headers) do |connection|
+
+      Faraday.new(connection_options) do |connection|
         connection.basic_auth api_key, secure_key
         connection.request    :json
-        connection.response   :logger
-        connection.use        FaradayMiddleware::Mashify
         connection.response   :json
         connection.adapter    Faraday.default_adapter
+        if @debug
+          connection.response   :logger
+        end
       end
     end
   end
