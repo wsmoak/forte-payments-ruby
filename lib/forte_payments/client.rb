@@ -18,7 +18,7 @@ module FortePayments
       @account_id  = options[:account_id] || ENV['FORTE_ACCOUNT_ID']
       @location_id = options[:location_id] || ENV['FORTE_LOCATION_ID']
       @debug       = (options[:debug] == false) ? false : true
-      @proxy       = options[:http_proxy] || ENV['HTTP_PROXY'] || ENV['http_proxy']
+      @proxy       = options[:proxy] || ENV['PROXY'] || ENV['proxy']
     end
 
     def get(path, options={})
