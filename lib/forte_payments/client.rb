@@ -63,11 +63,7 @@ module FortePayments
     end
 
     def base_url
-      "https://sandbox.forte.net/api/v2"
-    end
-
-    def base_path
-      "/accounts/#{account_id}/locations/#{location_id}"
+      "https://sandbox.forte.net/api/v2/accounts/act_#{account_id}/locations/loc_#{location_id}"
     end
 
     def connection
