@@ -18,7 +18,7 @@ module FortePayments
       @account_id  = options[:account_id] || ENV['FORTE_ACCOUNT_ID']
       @location_id = options[:location_id] || ENV['FORTE_LOCATION_ID']
       @debug       = (options[:debug] == false) ? false : true
-      @live        = (options[:live] == true || ENV['FORTE_LIVE'] == "true") ? true : false
+      @live        = (ENV['FORTE_LIVE'] == "" || ENV['FORTE_LIVE'] == nil) ? false : true
       @proxy       = options[:proxy] || ENV['PROXY'] || ENV['proxy']
     end
 
