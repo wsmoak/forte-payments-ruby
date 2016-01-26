@@ -18,19 +18,20 @@ module FortePayments
       @account_id  = options[:account_id] || ENV['FORTE_ACCOUNT_ID']
       @location_id = options[:location_id] || ENV['FORTE_LOCATION_ID']
       @debug       = (options[:debug] == false) ? false : true
+      @live        = (ENV['FORTE_LIVE'] == "" || ENV['FORTE_LIVE'] == nil) ? false : true
       @proxy       = options[:proxy] || ENV['PROXY'] || ENV['proxy']
     end
 
     def get(path, options={})
       make_request {
-        connection.get(base_url + path, options)
+        connection.get(base_path + path, options)
       }
     end
 
     def post(path, req_body)
       make_request {
         connection.post do |req|
-          req.url(base_url + path)
+          req.url(base_path + path)
           req.body = req_body
         end
       }
@@ -38,13 +39,13 @@ module FortePayments
 
     def put(path, options={})
       make_request {
-        connection.put(base_url + path, options)
+        connection.put(base_path + path, options)
       }
     end
 
     def delete(path, options = {})
       make_request {
-        connection.delete(base_url + path, options)
+        connection.delete(base_path + path, options)
       }
     end
 
@@ -63,7 +64,15 @@ module FortePayments
     end
 
     def base_url
-      "https://sandbox.forte.net/api/v2/accounts/act_#{account_id}/locations/loc_#{location_id}"
+      if @live
+        "https://api.forte.net/v2"
+      else
+        "https://sandbox.forte.net/api/v2"
+      end
+    end
+
+    def base_path
+      base_url + "/accounts/act_#{account_id}/locations/loc_#{location_id}"
     end
 
     def connection
