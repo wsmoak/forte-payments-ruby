@@ -22,6 +22,9 @@ module FortePayments
         delete("/customers/#{customer_id}")
       end
 
+      def customer_attach_payment(customer_id, options = {})
+        put("/customers/#{customer_id}/paymethods", options)
+      end
     end
   end
 end
