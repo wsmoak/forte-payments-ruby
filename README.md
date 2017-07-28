@@ -21,6 +21,8 @@ Add this line to your application's Gemfile:
     location_id: location_id
   )
 ````
+#### Production
+Set the `FORTE_LIVE` environment variable to 1
 
 ### History
 
