@@ -25,6 +25,10 @@ module FortePayments
       def customer_attach_payment(customer_id, options = {})
         put("/customers/#{customer_id}/paymethods", options)
       end
+
+      def list_transactions(customer_id)
+        get("/customers/#{customer_id}/transactions")
+      end
     end
   end
 end
