@@ -77,8 +77,8 @@ module FortePayments
       connection_options = {
         proxy: @proxy,
         headers: {
-          'Accept'                  => 'application/json',
-          'X-Forte-Auth-Account-Id' => "act_#{account_id}"
+          accept: 'application/json',
+          x_forte_auth_account_id: "act_#{account_id}"
         }
       }
 
