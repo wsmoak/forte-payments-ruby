@@ -85,13 +85,11 @@ module FortePayments
       }
 
       Faraday.new(connection_options) do |connection|
-        connection.basic_auth api_key, secure_key
-        connection.request    :json
-        connection.response   :json
-        connection.adapter    Faraday.default_adapter
-        if @debug
-          connection.response   :logger
-        end
+        connection.basic_auth(api_key, secure_key)
+        connection.request  :json
+        connection.response :json
+        connection.response :logger if @debug
+        connection.adapter  Faraday.default_adapter
       end
     end
   end
