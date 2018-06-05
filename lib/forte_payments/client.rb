@@ -43,7 +43,7 @@ module FortePayments
       }
     end
 
-    def delete(path, options = {})
+    def delete(path, options={})
       make_request {
         connection.delete(base_path + path, options)
       }
@@ -53,13 +53,11 @@ module FortePayments
 
     def make_request
       response = yield
-
       if response.success?
         response.body
       else
-        message = (response.body && response.body["response"] && response.body["response"]["response_desc"]) ? response.body["response"]["response_desc"] : response.body
-        
-        raise FortePayments::Error, message
+        raise FortePayments::Error, 'Unknown error' if response.body.nil?
+        raise FortePayments::Error, response.body.dig('response', 'response_desc') || response.body
       end
     end
 
