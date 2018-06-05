@@ -51,7 +51,7 @@ module FortePayments
 
     private
 
-    def make_request(&block)
+    def make_request
       response = yield
 
       if response.success?
