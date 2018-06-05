@@ -55,7 +55,7 @@ module FortePayments
       response = yield
 
       if response.success?
-        return response.body
+        response.body
       else
         message = (response.body && response.body["response"] && response.body["response"]["response_desc"]) ? response.body["response"]["response_desc"] : response.body
         
