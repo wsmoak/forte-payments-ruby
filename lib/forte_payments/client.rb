@@ -1,4 +1,3 @@
-
 module FortePayments
   class Error < StandardError
   end
@@ -10,16 +9,19 @@ module FortePayments
     include FortePayments::Client::Settlement
     include FortePayments::Client::Transaction
 
-    attr_reader :api_key, :secure_key, :account_id, :location_id
+    attr_reader :api_key
+    attr_reader :secure_key
+    attr_reader :account_id
+    attr_reader :location_id
 
-    def initialize(options = {})
+    def initialize(options={})
+      @live        = ENV['FORTE_LIVE'] && ENV['FORTE_LIVE'] != ''
       @api_key     = options[:api_key] || ENV['FORTE_API_KEY']
       @secure_key  = options[:secure_key] || ENV['FORTE_SECURE_KEY']
       @account_id  = options[:account_id] || ENV['FORTE_ACCOUNT_ID']
       @location_id = options[:location_id] || ENV['FORTE_LOCATION_ID']
-      @debug       = options[:debug]
-      @live        = (ENV['FORTE_LIVE'] == "" || ENV['FORTE_LIVE'] == nil) ? false : true
       @proxy       = options[:proxy] || ENV['PROXY'] || ENV['proxy']
+      @debug       = options[:debug]
     end
 
     def get(path, options={})
@@ -62,11 +64,7 @@ module FortePayments
     end
 
     def base_url
-      if @live
-        "https://api.forte.net/v2"
-      else
-        "https://sandbox.forte.net/api/v2"
-      end
+      @live ? "https://api.forte.net/v2" : "https://sandbox.forte.net/api/v2"
     end
 
     def base_path
