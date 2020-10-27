@@ -17,3 +17,4 @@ Gemfile.lock
 
 forte-*.gem
 .env
+.tool-versions
