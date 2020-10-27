@@ -11,14 +11,14 @@ module FortePayments
 
     attr_reader :api_key
     attr_reader :secure_key
-    attr_reader :account_id
+    attr_reader :organization_id
     attr_reader :location_id
 
     def initialize(options={})
       @live        = ENV['FORTE_LIVE'] && ENV['FORTE_LIVE'] != ''
       @api_key     = options[:api_key] || ENV['FORTE_API_KEY']
       @secure_key  = options[:secure_key] || ENV['FORTE_SECURE_KEY']
-      @account_id  = options[:account_id] || ENV['FORTE_ACCOUNT_ID']
+      @organization_id = options[:organization_id] || ENV['FORTE_ORGANIZATION_ID']
       @location_id = options[:location_id] || ENV['FORTE_LOCATION_ID']
       @proxy       = options[:proxy] || ENV['PROXY'] || ENV['proxy']
       @debug       = options[:debug]
@@ -64,11 +64,11 @@ module FortePayments
     end
 
     def base_url
-      @live ? "https://api.forte.net/v2" : "https://sandbox.forte.net/api/v2"
+      @live ? "https://api.forte.net/v3" : "https://sandbox.forte.net/api/v3"
     end
 
     def base_path
-      base_url + "/accounts/act_#{account_id}/locations/loc_#{location_id}"
+      base_url + "/organizations/org_#{organization_id}/locations/loc_#{location_id}"
     end
 
     def connection
@@ -76,7 +76,7 @@ module FortePayments
         proxy: @proxy,
         headers: {
           accept: 'application/json',
-          x_forte_auth_account_id: "act_#{account_id}"
+          x_forte_auth_organization_id: "org_#{organization_id}"
         }
       }
 
