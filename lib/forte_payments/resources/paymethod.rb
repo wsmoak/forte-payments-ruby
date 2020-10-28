@@ -5,8 +5,13 @@ module FortePayments
         post("/customers/#{customer_id}/paymethods", options)
       end
 
-      def list_paymethods(customer_id, options={})
-        get("/customers/#{customer_id}/paymethods", options)
+      def list_paymethods(options={})
+        customer_id = options.delete(:customer_id)
+        if customer_id
+          get("/customers/#{customer_id}/paymethods", options)
+        else
+          get("/paymethods")
+        end
       end
 
       def find_paymethod(customer_id, paymethod_id, options={})
