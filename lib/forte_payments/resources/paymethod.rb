@@ -10,7 +10,7 @@ module FortePayments
         if customer_id
           get("/customers/#{customer_id}/paymethods", options)
         else
-          get("/paymethods")
+          get("/paymethods", options)
         end
       end
 
