@@ -26,7 +26,7 @@ module FortePayments
 
     def get(path, options={})
       make_request {
-        connection.get(base_path + path, options)
+        connection.get(base_path(options) + path, options)
       }
     end
 
@@ -67,8 +67,14 @@ module FortePayments
       @live ? "https://api.forte.net/v3" : "https://sandbox.forte.net/api/v3"
     end
 
-    def base_path
-      base_url + "/organizations/org_#{organization_id}/locations/loc_#{location_id}"
+    def base_path(options = {})
+      omit_location = options.delete(:omit_location)
+      if omit_location
+        base_url + "/organizations/org_#{organization_id}"
+      else
+        base_url + "/organizations/org_#{organization_id}/locations/loc_#{location_id}"
+      end
+
     end
 
     def connection
