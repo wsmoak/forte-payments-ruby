@@ -92,7 +92,7 @@ module FortePayments
         connection.basic_auth(api_key, secure_key)
         connection.request  :json
         connection.response :json
-        connection.response :logger if @debug
+        connection.response :logger, nil, { bodies: true } if @debug
         connection.adapter  Faraday.default_adapter
       end
     end
