@@ -61,6 +61,8 @@ module FortePayments
         raise FortePayments::Error, 'Unknown error' if response.body.nil?
         raise FortePayments::Error, response.body.dig('response', 'response_desc') || response.body
       end
+    rescue Faraday::ParsingError
+      raise FortePayments::Error, 'Unable to parse response'
     end
 
     def base_url
