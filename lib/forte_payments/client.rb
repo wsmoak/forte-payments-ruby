@@ -15,7 +15,7 @@ module FortePayments
     attr_reader :location_id
 
     def initialize(options={})
-      @live        = ENV['FORTE_LIVE'] && ENV['FORTE_LIVE'] != ''
+      @live        = options[:mode] == :production || (ENV['FORTE_LIVE'] && ENV['FORTE_LIVE'] != '')
       @api_key     = options[:api_key] || ENV['FORTE_API_KEY']
       @secure_key  = options[:secure_key] || ENV['FORTE_SECURE_KEY']
       @organization_id = options[:organization_id] || ENV['FORTE_ORGANIZATION_ID']
